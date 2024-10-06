@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build_and_test:
+    name: Build & Test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history so that license verification works correctly.
+          fetch-depth: 0
+
+      - name: Setup Java toolchain
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and verify artifacts
+        run: mvn --batch-mode verify
